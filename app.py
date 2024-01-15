@@ -53,7 +53,7 @@ while True:
         for i, kpi in enumerate(kpi_list[len(real_types):]):
             kpi.metric(
                 label=f"Minutes from last {real_types[i]}",
-                value=int((date - df[df['Type'] == real_types[i]]['Date'].values[-1]) / np.timedelta64(1, 'm')) + 180,
+                value=int((date - df[df['Type'] == real_types[i]]['Date'].values[-1]) / np.timedelta64(1, 'h')) + 3,
             )
 
         col1, col2 = st.columns(2)
@@ -61,7 +61,7 @@ while True:
         with col1:
             st.markdown(f"<h4 style='text-align: center;'>{filter_type} by Date</h4>", unsafe_allow_html=True)
             df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
-            fig1 = px.line(data_frame=df_vis, y='Type', x='Date')
+            fig1 = px.scatter(data_frame=df_vis, y='Type', x='Date')
             st.write(fig1)
 
         with col2:
