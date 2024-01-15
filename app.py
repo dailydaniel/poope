@@ -68,12 +68,14 @@ while True:
             df_vis['X'] = df_vis['Date'].dt.time
             df_vis = df_vis.sort_values('X')
             fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type')
+            fig1.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
             st.write(fig1)
 
         with col2:
             st.markdown(f"<h4 style='text-align: center;'>Bar chart by {filter_period}</h1>", unsafe_allow_html=True)
             df_gb = df.groupby(pd.Grouper(key='Date', freq=filter2gb))['Type'].value_counts().reset_index()
             fig2 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
+            fig2.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99))
             st.write(fig2)
 
         st.markdown("### Full Table")
