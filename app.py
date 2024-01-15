@@ -29,7 +29,9 @@ df = get_data()
 types = ['All'] + df['Type'].dropna().unique().tolist()
 
 st.title("Poope & Pee")
-filter_ = st.selectbox("Select type:", types)
+filter_type = st.selectbox("Select type:", types)
+filter_period = st.selectbox("Select period:", ['Month', 'Week', 'Day'])
+filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}
 
 placeholder = st.empty()
 
@@ -55,12 +57,28 @@ while True:
                 value=int((date - df[df['Type'] == real_types[i]]['Date'].values[-1]) / np.timedelta64(1, 'm')) + 180,
             )
 
-        st.markdown(f"### {filter_}s by date")
-        cur_df = df if filter_ == 'All' else df[df['Type'] == filter_]
-        fig = px.line(
-            data_frame=cur_df, y='Type', x='Date', hover_data=['Info']
-        )
-        st.write(fig)
+        fig_col1, fig_col2 = st.columns(2)
+
+        with fig_col1:
+            st.markdown(f"<h4 style='text-align: center;'>{filter_type}s by date</h4>", unsafe_allow_html=True)
+            cur_df = df if filter_type == 'All' else df[df['Type'] == filter_type]
+            fig1 = px.line(data_frame=cur_df, y='Type', x='Date', hover_data=['Info'])
+            st.write(fig1)
+
+        with fig_col1:
+            st.markdown(f"<h4 style='text-align: center;'>Bars by {filter_period}s</h1>", unsafe_allow_html=True)
+            cur_df = df.groupby(pd.Grouper(key='Date',
+                                           freq=filter2gb[filter_period]),
+                                as_index=False)['Type'].value_counts()
+            fig2 = px.line(data_frame=cur_df, y='count', x='Date', color='Type')
+            st.write(fig2)
+
+        # st.markdown(f"### {filter_type}s by date")
+        # cur_df = df if filter_type == 'All' else df[df['Type'] == filter_type]
+        # fig = px.line(
+        #     data_frame=cur_df, y='Type', x='Date', hover_data=['Info']
+        # )
+        # st.write(fig)
 
         st.markdown("### Full Table")
         st.dataframe(df)
