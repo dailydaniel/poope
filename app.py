@@ -19,7 +19,7 @@ def get_data() -> pd.DataFrame:
     df = pd.read_csv('https://docs.google.com/spreadsheets/d/' +
                      key +
                      '/export?gid=0&format=csv',
-                     parse_dates=['дата'],
+                     parse_dates=['Date'],
                      dayfirst=True)
 
     return df
