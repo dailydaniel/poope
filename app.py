@@ -73,7 +73,7 @@ while True:
         st.markdown("### Full Table")
         st.dataframe(df)
 
-        url_tg = "https://t.me/mandanya77"
-        st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
+    url_tg = "https://t.me/mandanya77"
+    st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
 
     time.sleep(60)
