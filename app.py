@@ -66,7 +66,7 @@ while True:
             prev_date = df[df['Type'] == real_types[i]]['Date'].values[-1]
             kpi.metric(
                 label=f"Hours from last {real_types[i]}",
-                value=round((date - prev_date) / np.timedelta64(1, 'h'), 1) + 3,
+                value=int(round((date - prev_date) / np.timedelta64(1, 'h'), 0) + 3),
             )
 
         col1, col2 = st.columns(2)
