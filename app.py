@@ -45,11 +45,9 @@ while True:
         kpi_list = st.columns(len(real_types) * 2)
 
         for i, kpi in enumerate(kpi_list[:len(real_types)]):
-            kpi.metric(
-                label=f"{real_types[i]}s count",
-                value=len(df[df['Type'] == real_types[i]]),
-                delta=len(df[:-1][df['Type'] == real_types[i]]),
-            )
+            val = len(df[df['Type'] == real_types[i]])
+            d = val - len(df[:-1][df['Type'] == real_types[i]])
+            kpi.metric(label=f"{real_types[i]}s count", value=val, delta=d)
 
         for i, kpi in enumerate(kpi_list[len(real_types):]):
             kpi.metric(
@@ -65,10 +63,10 @@ while True:
             fig1 = px.line(data_frame=cur_df, y='Type', x='Date', hover_data=['Info'])
             st.write(fig1)
 
-        with fig_col1:
+        with fig_col2:
             st.markdown(f"<h4 style='text-align: center;'>Bars by {filter_period}s</h1>", unsafe_allow_html=True)
             cur_df = df.groupby(pd.Grouper(key='Date',
-                                           freq='M'),
+                                           freq=filter2gb),
                                 as_index=False)['Type'].value_counts()
             fig2 = px.line(data_frame=cur_df, y='count', x='Date', color='Type')
             st.write(fig2)
