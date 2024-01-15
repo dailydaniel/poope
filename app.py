@@ -29,7 +29,7 @@ df = get_data()
 types = ['All'] + df['Type'].dropna().unique().tolist()
 
 st.title("Poope & Pee")
-st.markdown("Start: 2024-01-14. Logbook of my pee and poope powered by google sheet and siri shortcuts")
+st.markdown("Start: 2024-01-14. Logbook of my pee and poope.\nPowered by google sheet and siri shortcuts.\nVersion 2.1")
 url_tg = "https://t.me/mandanya77"
 st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
 filter_type = st.selectbox("Select type:", types)
