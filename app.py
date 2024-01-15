@@ -31,7 +31,7 @@ types = ['All'] + df['Type'].dropna().unique().tolist()
 st.title("Poope & Pee")
 filter_type = st.selectbox("Select type:", types)
 filter_period = st.selectbox("Select period:", ['Month', 'Week', 'Day'])
-filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}
+filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
 
 placeholder = st.empty()
 
@@ -68,7 +68,7 @@ while True:
         with fig_col1:
             st.markdown(f"<h4 style='text-align: center;'>Bars by {filter_period}s</h1>", unsafe_allow_html=True)
             cur_df = df.groupby(pd.Grouper(key='Date',
-                                           freq=filter2gb[filter_period]),
+                                           freq=filter2gb),
                                 as_index=False)['Type'].value_counts()
             fig2 = px.line(data_frame=cur_df, y='count', x='Date', color='Type')
             st.write(fig2)
