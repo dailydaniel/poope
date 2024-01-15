@@ -55,18 +55,18 @@ while True:
                 value=int((date - df[df['Type'] == real_types[i]]['Date'].values[-1]) / np.timedelta64(1, 'm')) + 180,
             )
 
-        fig_col1, fig_col2 = st.columns(2)
+        col1, col2 = st.columns(2)
 
-        # with fig_col1:
-        #     st.markdown(f"<h4 style='text-align: center;'>Bar chart by {filter_period}</h1>", unsafe_allow_html=True)
-        #     df_gb = df.groupby(pd.Grouper(key='Date', freq=filter2gb))['Type'].value_counts().reset_index()
-        #     fig1 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
-        #     st.write(fig1)
+        with col1:
+            st.markdown(f"<h4 style='text-align: center;'>Bar chart by {filter_period}</h1>", unsafe_allow_html=True)
+            df_gb = df.groupby(pd.Grouper(key='Date', freq=filter2gb))['Type'].value_counts().reset_index()
+            fig1 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
+            st.write(fig1)
 
-        with fig_col2:
+        with col2:
             st.markdown(f"<h4 style='text-align: center;'>{filter_type} by Date</h4>", unsafe_allow_html=True)
             df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
-            fig2 = px.line(data_frame=df_vis, y='Type', x='Date', hover_data=['Info'])
+            fig2 = px.line(data_frame=df_vis, y='Type', x='Date')
             st.write(fig2)
 
         st.markdown("### Full Table")
