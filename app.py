@@ -68,15 +68,8 @@ while True:
             df_gb = df.groupby(pd.Grouper(key='Date',
                                           freq=filter2gb),
                                as_index=False)['Type'].value_counts()
-            fig2 = px.line(data_frame=df_gb, y='count', x='Date', color='Type')
+            fig2 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
             st.write(fig2)
-
-        # st.markdown(f"### {filter_type}s by date")
-        # cur_df = df if filter_type == 'All' else df[df['Type'] == filter_type]
-        # fig = px.line(
-        #     data_frame=cur_df, y='Type', x='Date', hover_data=['Info']
-        # )
-        # st.write(fig)
 
         st.markdown("### Full Table")
         st.dataframe(df)
