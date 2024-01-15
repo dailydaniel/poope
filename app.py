@@ -5,6 +5,7 @@ import plotly.express as px
 import streamlit as st
 import matplotlib
 from random import choices
+import requests
 
 import warnings
 warnings.simplefilter('ignore')
@@ -17,7 +18,8 @@ st.set_page_config(
 )
 
 key = '1GfLQYA0g04Rjib0xMtOzwGA_vnJP0NSGuZLENI71EgI'
-
+url_base = "https://push.techulus.com/api/v1/notify/08b75608-8570-470d-987b-a507529cf525/?title="
+url_end = "&body={}"
 
 # @st.cache_data
 def get_data() -> pd.DataFrame:
@@ -64,9 +66,12 @@ while True:
 
         for i, kpi in enumerate(kpi_list[len(real_types):]):
             prev_date = df[df['Type'] == real_types[i]]['Date'].values[-1]
+            d = int(round((date - prev_date) / np.timedelta64(1, 'h'), 0) + 3)
+            if d >= 24:
+                r = requests.get(url=url_base + f"You didn't {real_types[i]} for {d} hours" + url_end)
             kpi.metric(
                 label=f"Hours from last {real_types[i]}",
-                value=int(round((date - prev_date) / np.timedelta64(1, 'h'), 0) + 3),
+                value=d,
             )
 
         col1, col2 = st.columns(2)
@@ -106,4 +111,4 @@ while True:
         st.markdown("### Full Table")
         st.dataframe(df)
 
-    time.sleep(300)
+    time.sleep(3600)
