@@ -64,7 +64,7 @@ while True:
             st.write(fig1)
 
         with fig_col2:
-            st.markdown(f"<h4 style='text-align: center;'>{filter_type} by date</h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: center;'>{filter_type} by Date</h4>", unsafe_allow_html=True)
             df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
             fig2 = px.line(data_frame=df_vis, y='Type', x='Date', hover_data=['Info'])
             st.write(fig2)
