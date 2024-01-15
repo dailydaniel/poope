@@ -30,6 +30,8 @@ types = ['All'] + df['Type'].dropna().unique().tolist()
 
 st.title("Poope & Pee")
 st.markdown("Start: 2024-01-14. Logbook of my pee and poope powered by google sheet and siri shortcuts")
+url_tg = "https://t.me/mandanya77"
+st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
 filter_type = st.selectbox("Select type:", types)
 filter_period = st.selectbox("Select period:", ['Month', 'Week', 'Day'])
 filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
@@ -59,9 +61,13 @@ while True:
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown(f"<h4 style='text-align: center;'>{filter_type} by Date</h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: center;'>{filter_type} distribution per Day</h4>", unsafe_allow_html=True)
+            dt = 100 / df.index.size + 2
             df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
-            fig1 = px.scatter(data_frame=df_vis, y='Type', x='Date')
+            df_vis['Y'] = np.random.random(df_vis.index.size) / dt + 0.5
+            df_vis['X'] = df_vis['Date'].dt.time
+            df_vis = df_vis.sort_values('X')
+            fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type')
             st.write(fig1)
 
         with col2:
@@ -72,8 +78,5 @@ while True:
 
         st.markdown("### Full Table")
         st.dataframe(df)
-
-    url_tg = "https://t.me/mandanya77"
-    st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
 
     time.sleep(60)
