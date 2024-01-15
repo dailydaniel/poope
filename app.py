@@ -65,7 +65,7 @@ while True:
 
         with fig_col2:
             st.markdown(f"<h4 style='text-align: center;'>Bars by {filter_period}s</h1>", unsafe_allow_html=True)
-            st.dataframe(df)
+            st.dataframe(df.groupby(pd.Grouper(key='Date', freq='D'), as_index=False)['Type'].value_counts())
             # df_gb = df.groupby(pd.Grouper(key='Date', freq='D'),
             #                    as_index=False)['Type'].value_counts()
             # fig2 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
