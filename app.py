@@ -68,10 +68,10 @@ while True:
             cur_df = get_data()
             df_gb = cur_df.groupby(pd.Grouper(key='Date', freq='D'),
                                as_index=False)['Type'].value_counts()
-            fig2 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
-            st.write(fig2)
+            # fig2 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
+            # st.write(fig2)
 
         st.markdown("### Full Table")
-        st.dataframe(df)
+        st.dataframe(df_gb)
 
     time.sleep(60)
