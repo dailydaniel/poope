@@ -57,11 +57,11 @@ while True:
 
         fig_col1, fig_col2 = st.columns(2)
 
-        with fig_col1:
-            st.markdown(f"<h4 style='text-align: center;'>Bar chart by {filter_period}</h1>", unsafe_allow_html=True)
-            df_gb = df.groupby(pd.Grouper(key='Date', freq=filter2gb))['Type'].value_counts().reset_index()
-            fig1 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
-            st.write(fig1)
+        # with fig_col1:
+        #     st.markdown(f"<h4 style='text-align: center;'>Bar chart by {filter_period}</h1>", unsafe_allow_html=True)
+        #     df_gb = df.groupby(pd.Grouper(key='Date', freq=filter2gb))['Type'].value_counts().reset_index()
+        #     fig1 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
+        #     st.write(fig1)
 
         with fig_col2:
             st.markdown(f"<h4 style='text-align: center;'>{filter_type} by Date</h4>", unsafe_allow_html=True)
