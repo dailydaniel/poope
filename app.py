@@ -35,7 +35,7 @@ st.markdown("Start: 2024-01-14. Logbook of my pee and poope.")
 st.markdown("Powered by google sheet and siri shortcuts.")
 url_tg = "https://t.me/mandanya77"
 st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
-st.markdown("Version 2.2")
+st.markdown("Version 2.3")
 filter_type = st.selectbox("Select type:", types)
 filter_period = st.selectbox("Select period:", ['Month', 'Week', 'Day'])
 filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
