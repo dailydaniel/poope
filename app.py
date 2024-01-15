@@ -29,6 +29,7 @@ df = get_data()
 types = ['All'] + df['Type'].dropna().unique().tolist()
 
 st.title("Poope & Pee")
+st.markdown("Start: 2024-01-14. Logbook of my pee and poope powered by google sheet and siri shortcuts")
 filter_type = st.selectbox("Select type:", types)
 filter_period = st.selectbox("Select period:", ['Month', 'Week', 'Day'])
 filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
@@ -71,5 +72,8 @@ while True:
 
         st.markdown("### Full Table")
         st.dataframe(df)
+
+        url_tg = "https://t.me/mandanya77"
+        st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
 
     time.sleep(60)
