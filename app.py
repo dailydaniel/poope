@@ -52,7 +52,7 @@ while True:
 
         for i, kpi in enumerate(kpi_list[len(real_types):]):
             kpi.metric(
-                label=f"Minutes from last {real_types[i]}",
+                label=f"Hours from last {real_types[i]}",
                 value=int((date - df[df['Type'] == real_types[i]]['Date'].values[-1]) / np.timedelta64(1, 'h')) + 3,
             )
 
