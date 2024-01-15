@@ -59,19 +59,19 @@ while True:
 
         with fig_col1:
             st.markdown(f"<h4 style='text-align: center;'>{filter_type}s by date</h4>", unsafe_allow_html=True)
-            df_vis = df.copy() if filter_type == 'All' else df[df['Type'] == filter_type]
+            df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
             fig1 = px.line(data_frame=df_vis, y='Type', x='Date', hover_data=['Info'])
             st.write(fig1)
 
         with fig_col2:
             st.markdown(f"<h4 style='text-align: center;'>Bars by {filter_period}s</h1>", unsafe_allow_html=True)
-            cur_df = get_data()
-            df_gb = cur_df.groupby(pd.Grouper(key='Date', freq='D'),
-                               as_index=False)['Type'].value_counts()
+            st.dataframe(df)
+            # df_gb = df.groupby(pd.Grouper(key='Date', freq='D'),
+            #                    as_index=False)['Type'].value_counts()
             # fig2 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
             # st.write(fig2)
 
         st.markdown("### Full Table")
-        st.dataframe(df_gb)
+        st.dataframe(df)
 
     time.sleep(60)
