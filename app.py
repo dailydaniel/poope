@@ -69,14 +69,13 @@ while True:
             df_vis = df_vis.sort_values('X')
             fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type')
             fig1.update_layout(legend=dict(yanchor="top", y=1.2, xanchor="left", x=0.01))
-            # fig1.update_xaxes(ticks="inside")
             fig1.update_layout(
                 # autosize=False,
                 # width=750,
                 # height=500,
                 margin=dict(
                     l=50,
-                    r=125,
+                    r=150,
                     # b=50,
                     # t=50,
                     # pad=4
@@ -90,6 +89,18 @@ while True:
             df_gb = df.groupby(pd.Grouper(key='Date', freq=filter2gb))['Type'].value_counts().reset_index()
             fig2 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
             fig2.update_layout(legend=dict(yanchor="top", y=1.2, xanchor="left", x=0.01))
+            fig1.update_layout(
+                # autosize=False,
+                # width=750,
+                # height=500,
+                margin=dict(
+                    l=50,
+                    r=50,
+                    # b=50,
+                    # t=50,
+                    # pad=4
+                ),
+            )
             st.write(fig2)
 
         st.markdown("### Full Table")
