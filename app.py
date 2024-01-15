@@ -6,6 +6,9 @@ import streamlit as st
 import matplotlib
 from random import choices
 
+import warnings
+warnings.simplefilter('ignore')
+
 
 st.set_page_config(
     page_title="Poope & Pee",
