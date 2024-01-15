@@ -38,7 +38,7 @@ st.markdown("Start: 2024-01-14. Logbook of my pee and poope.")
 st.markdown("Powered by google sheet and siri shortcuts.")
 url_tg = "https://t.me/mandanya77"
 st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
-st.markdown("Version 2.4")
+st.markdown("Version 2.5")
 filter_type = st.selectbox("Select type:", types)
 filter_period = st.selectbox("Select period:", ['Day', 'Week', 'Month'])
 filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
@@ -63,9 +63,10 @@ while True:
             kpi.metric(label=f"{real_types[i]}s count", value=val, delta=d)
 
         for i, kpi in enumerate(kpi_list[len(real_types):]):
+            prev_date = df[df['Type'] == real_types[i]]['Date'].values[-1]
             kpi.metric(
                 label=f"Hours from last {real_types[i]}",
-                value=int((date - df[df['Type'] == real_types[i]]['Date'].values[-1]) / np.timedelta64(1, 'h')) + 3,
+                value=round((date - prev_date) / np.timedelta64(1, 'h'), 1) + 3,
             )
 
         col1, col2 = st.columns(2)
