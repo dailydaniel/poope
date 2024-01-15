@@ -38,9 +38,9 @@ st.markdown("Start: 2024-01-14. Logbook of my pee and poope.")
 st.markdown("Powered by google sheet and siri shortcuts.")
 url_tg = "https://t.me/mandanya77"
 st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
-st.markdown("Version 2.3")
+st.markdown("Version 2.4")
 filter_type = st.selectbox("Select type:", types)
-filter_period = st.selectbox("Select period:", ['Month', 'Week', 'Day'])
+filter_period = st.selectbox("Select period:", ['Day', 'Week', 'Month'])
 filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
 
 placeholder = st.empty()
@@ -74,7 +74,8 @@ while True:
             st.markdown(f"<h4 style='text-align: center;'>{filter_type} distribution per Day</h4>", unsafe_allow_html=True)
             dt = 100 / df.index.size + 2
             df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
-            df_vis['Y'] = np.random.random(df_vis.index.size) / dt + 0.5
+            df_vis['Y'] = np.random.random(df_vis.index.size) / dt
+            df_vis['Y'] = df_vis['Y'] - df_vis['Y'].mean() + 0.5
             df_vis['X'] = df_vis['Date'].dt.time
             df_vis = df_vis.sort_values('X')
             fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type')
