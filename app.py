@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import matplotlib
+from random import choices
 
 
 st.set_page_config(
@@ -31,7 +33,7 @@ types = ['All'] + df['Type'].dropna().unique().tolist()
 st.title("Poope & Pee")
 st.markdown("Start: 2024-01-14. Logbook of my pee and poope.")
 st.markdown("Powered by google sheet and siri shortcuts.")
-st.markdown("Version 2.1")
+st.markdown("Version 2.2")
 url_tg = "https://t.me/mandanya77"
 st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
 filter_type = st.selectbox("Select type:", types)
@@ -44,6 +46,9 @@ while True:
     df = get_data()
 
     real_types = df['Type'].dropna().unique().tolist()
+    colors = dict(matplotlib.colors.cnames.items())
+    hex_colors = tuple(colors.values())
+    cur_colors = choices(hex_colors, k=len(real_types))
     date = pd.Timestamp.now()
 
     with placeholder.container():
@@ -71,18 +76,11 @@ while True:
             df_vis = df_vis.sort_values('X')
             fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type')
             fig1.update_layout(legend=dict(yanchor="top", y=1.2, xanchor="left", x=0.01))
-            fig1.update_layout(
-                # autosize=False,
-                # width=750,
-                # height=500,
-                margin=dict(
-                    l=50,
-                    r=150,
-                    # b=50,
-                    # t=50,
-                    # pad=4
-                ),
-            )
+            fig1.update_layout(margin=dict(l=50, r=150))
+            fig1.update_yaxes(nticks=5)
+
+            for i, color in enumerate(cur_colors):
+                fig1.data[i].marker.color = color
 
             st.write(fig1)
 
@@ -91,21 +89,15 @@ while True:
             df_gb = df.groupby(pd.Grouper(key='Date', freq=filter2gb))['Type'].value_counts().reset_index()
             fig2 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
             fig2.update_layout(legend=dict(yanchor="top", y=1.2, xanchor="left", x=0.01))
-            fig1.update_layout(
-                # autosize=False,
-                # width=750,
-                # height=500,
-                margin=dict(
-                    l=50,
-                    r=50,
-                    # b=50,
-                    # t=50,
-                    # pad=4
-                ),
-            )
+            fig2.update_layout(margin=dict(l=50, r=50))
+            fig2.update_yaxes(nticks=5)
+
+            for i, color in enumerate(cur_colors):
+                fig2.data[i].marker.color = color
+
             st.write(fig2)
 
         st.markdown("### Full Table")
         st.dataframe(df)
 
-    time.sleep(60)
+    time.sleep(300)
