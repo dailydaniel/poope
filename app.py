@@ -32,13 +32,15 @@ def get_data() -> pd.DataFrame:
 
 df = get_data()
 types = ['All'] + df['Type'].dropna().unique().tolist()
+colors = dict(matplotlib.colors.cnames.items())
+hex_colors = tuple(colors.values())
 
 st.title("Poope & Pee")
 st.markdown("Start: 2024-01-14. Logbook of my pee and poope.")
 st.markdown("Powered by google sheet and siri shortcuts.")
 url_tg = "https://t.me/mandanya77"
 st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
-st.markdown("Version 2.5")
+st.markdown("Version 2.7")
 filter_type = st.selectbox("Select type:", types)
 filter_period = st.selectbox("Select period:", ['Day', 'Week', 'Month'])
 filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
@@ -49,8 +51,6 @@ while True:
     df = get_data()
 
     real_types = df['Type'].dropna().unique().tolist()
-    colors = dict(matplotlib.colors.cnames.items())
-    hex_colors = tuple(colors.values())
     cur_colors = choices(hex_colors, k=len(real_types))
     date = pd.Timestamp.now()
 
@@ -84,8 +84,9 @@ while True:
             fig1.update_layout(margin=dict(l=50, r=150))
             fig1.update_yaxes(nticks=5)
 
-            for i, color in enumerate(cur_colors):
-                fig1.data[i].marker.color = color
+            if filter_type == 'All':
+                for i, color in enumerate(cur_colors):
+                    fig1.data[i].marker.color = color
 
             st.write(fig1)
 
