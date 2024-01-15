@@ -63,11 +63,11 @@ while True:
             fig1 = px.bar(data_frame=df_gb, y='count', x='Date', color='Type')
             st.write(fig1)
 
-        # with fig_col2:
-        #     st.markdown(f"<h4 style='text-align: center;'>{filter_type} by date</h4>", unsafe_allow_html=True)
-        #     df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
-        #     fig2 = px.line(data_frame=df_vis, y='Type', x='Date', hover_data=['Info'])
-        #     st.write(fig2)
+        with fig_col2:
+            st.markdown(f"<h4 style='text-align: center;'>{filter_type} by date</h4>", unsafe_allow_html=True)
+            df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
+            fig2 = px.line(data_frame=df_vis, y='Type', x='Date', hover_data=['Info'])
+            st.write(fig2)
 
         st.markdown("### Full Table")
         st.dataframe(df)
