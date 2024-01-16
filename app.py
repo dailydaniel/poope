@@ -71,6 +71,7 @@ while True:
 
     real_types = df['Type'].dropna().unique().tolist()
     cur_colors = choices(hex_colors, k=len(real_types))
+    type2color = {rt: col for rt, col in zip(real_types, cur_colors)}
     date = pd.Timestamp.now()
 
     with placeholder.container():
@@ -113,9 +114,9 @@ while True:
             fig1.update_layout(margin=dict(l=50, r=150))
             fig1.update_yaxes(nticks=5)
 
-            if filter_type == 'All':
-                for i, color in enumerate(cur_colors):
-                    fig1.data[i].marker.color = color
+            for i in range(len(fig1.data)):
+                name = fig1.data[i].name
+                fig1.data[i].marker.color = type2color[name]
 
             st.write(fig1)
 
@@ -127,8 +128,9 @@ while True:
             fig2.update_layout(margin=dict(l=50, r=50))
             fig2.update_yaxes(nticks=5)
 
-            for i, color in enumerate(cur_colors):
-                fig2.data[i].marker.color = color
+            for i in range(len(fig2.data)):
+                name = fig2.data[i].name
+                fig2.data[i].marker.color = type2color[name]
 
             st.write(fig2)
 
