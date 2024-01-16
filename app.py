@@ -21,6 +21,23 @@ key = '1GfLQYA0g04Rjib0xMtOzwGA_vnJP0NSGuZLENI71EgI'
 url_base = "https://push.techulus.com/api/v1/notify/08b75608-8570-470d-987b-a507529cf525/?title="
 url_end = "&body={}"
 
+
+def get_d(n: int, delta: int = 0.01):
+    res = []
+
+    if n % 2 != 0:
+        res.append(0)
+        n -= 1
+
+    for i in range(n):
+        if i % 2 == 0:
+            res.append(delta + delta * (i // 2))
+        else:
+            res.append(-delta - delta * (i // 2))
+
+    return pd.Series(res).sample(len(res)).values
+
+
 # @st.cache_data
 def get_data() -> pd.DataFrame:
     df = pd.read_csv('https://docs.google.com/spreadsheets/d/' +
@@ -42,7 +59,7 @@ st.markdown("Start: 2024-01-14. Logbook of my pee and poope.")
 st.markdown("Powered by google sheet and siri shortcuts.")
 url_tg = "https://t.me/mandanya77"
 st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
-st.markdown("Version 2.8")
+st.markdown("Version 2.9")
 filter_type = st.selectbox("Select type:", types)
 filter_period = st.selectbox("Select period:", ['Day', 'Week', 'Month'])
 filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
@@ -78,12 +95,16 @@ while True:
 
         with col1:
             st.markdown(f"<h4 style='text-align: center;'>{filter_type} distribution per Day</h4>", unsafe_allow_html=True)
-            dt = 100 / df.index.size + 2
             df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
-            df_vis['Y'] = np.random.random(df_vis.index.size) / dt
-            df_vis['Y'] = df_vis['Y'] - df_vis['Y'].mean() + 0.5
             df_vis['X'] = df_vis['Date'].dt.time
             df_vis = df_vis.sort_values('X')
+            df_vis['Y'] = 0.5
+
+            for x in df_vis['X'].unique():
+                idx = df_vis[df_vis['X'] == x].index
+                vals = get_d(len(idx))
+                df_vis.loc[idx, 'Y'] = df_vis.loc[idx, 'Y'].values + vals
+
             fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type')
             fig1.update_layout(legend=dict(yanchor="top", y=1.2, xanchor="left", x=0.01))
             fig1.update_layout(margin=dict(l=50, r=150))
