@@ -59,7 +59,7 @@ st.markdown("Start: 2024-01-14. Logbook of my pee and poope.")
 st.markdown("Powered by google sheet and siri shortcuts.")
 url_tg = "https://t.me/mandanya77"
 st.markdown("made by Daniel Zholkovsky [telegram](%s)" % url_tg)
-st.markdown("Version 2.10")
+st.markdown("Version 2.11")
 filter_type = st.selectbox("Select type:", types)
 filter_period = st.selectbox("Select period:", ['Day', 'Week', 'Month'])
 filter2gb = {'Month': 'M', 'Week': 'W-MON', 'Day': 'D'}[filter_period]
@@ -96,18 +96,19 @@ while True:
         with col1:
             st.markdown(f"<h4 style='text-align: center;'>{filter_type} distribution per Day</h4>", unsafe_allow_html=True)
             df_vis = df if filter_type == 'All' else df[df['Type'] == filter_type]
-            df_vis['X'] = df_vis['Date'].dt.time
-            df_vis = df_vis.sort_values('X')
-            df_vis['X'] = df_vis['X'].apply(lambda x: x.strftime('%H:%M'))
+            df_vis['Time'] = df_vis['Date'].dt.time
+            df_vis = df_vis.sort_values('Time')
+            df_vis['Seconds'] = df_vis['Time'].apply(lambda x: x.hour * 3600 + x.minute * 60 + x.second)
+            df_vis['Percent'] = (df_vis['Seconds'] / 86400 * 100).astype('int')
+            # df_vis['Time'] = df_vis['Time'].apply(lambda x: x.strftime('%H:%M'))
             df_vis['Y'] = 0.5
 
-            for x in df_vis['X'].unique():
-                idx = df_vis[df_vis['X'] == x].index
+            for x in df_vis['Percent'].unique():
+                idx = df_vis[df_vis['Percent'] == x].index
                 vals = get_d(len(idx))
                 df_vis.loc[idx, 'Y'] = df_vis.loc[idx, 'Y'].values + vals
 
-            fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type',
-                              category_orders={"X": df_vis['X']}, range_y=[0, 1])
+            fig1 = px.scatter(data_frame=df_vis, y='Y', x='Percent', color='Type', hover_data=['Time'], range_y=[0, 1])
             fig1.update_layout(legend=dict(yanchor="top", y=1.2, xanchor="left", x=0.01))
             fig1.update_layout(margin=dict(l=50, r=150))
             fig1.update_yaxes(nticks=5)
