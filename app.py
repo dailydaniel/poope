@@ -105,7 +105,8 @@ while True:
                 vals = get_d(len(idx))
                 df_vis.loc[idx, 'Y'] = df_vis.loc[idx, 'Y'].values + vals
 
-            fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type')
+            fig1 = px.scatter(data_frame=df_vis, y='Y', x='X', color='Type',
+                              category_orders={"X": df_vis['X']}, range_y=[0, 1])
             fig1.update_layout(legend=dict(yanchor="top", y=1.2, xanchor="left", x=0.01))
             fig1.update_layout(margin=dict(l=50, r=150))
             fig1.update_yaxes(nticks=5)
